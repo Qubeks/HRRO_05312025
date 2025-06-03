@@ -4257,7 +4257,7 @@ int32 status_calc_pc_sub(map_session_data* sd, uint8 opt)
 	}
 	
 	// Soul Link Modification Script Based [Singe Horizontal] mauiboy
-	if (sd && sc->count && sc->getSCE(SC_SPIRIT)) {
+	if (sd && sc && sc->getSCE(SC_SPIRIT)) {
 			auto spirit = sc->getSCE(SC_SPIRIT);
 			if (spirit != nullptr){
 				std::shared_ptr<mods::soul_link_data> sld = mods::soul_link_db.find(spirit->val2);

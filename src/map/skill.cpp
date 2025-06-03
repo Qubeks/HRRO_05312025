@@ -8093,7 +8093,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 			struct map_session_data *sd = BL_CAST(BL_PC, bl);
 			if (sd) {
 				// Block the MO_BODYRELOCATION skill
-				skill_blockpc_start(sd, MO_BODYRELOCATION, skill_get_time(skill_id, skill_lv));
+				skill_blockpc_start(*sd, MO_BODYRELOCATION, skill_get_time(skill_id, skill_lv));
 			}
 		}
 		break;
@@ -14987,7 +14987,7 @@ int32 skill_castend_pos2(struct block_list* src, int32 x, int32 y, uint16 skill_
 	case HW_GANBANTEIN: { // Old Ganbantein Behavior [mauiboy]
 		if (rnd() % 100 < 80) {
 			int32 dummy = 1;
-			clif_skill_poseffect(src, skill_id, skill_lv, x, y, tick);
+			clif_skill_poseffect(*src, skill_id, skill_lv, x, y, tick);
 			int32 splash_range = skill_get_splash(skill_id, skill_lv);
 
 			// Step 1: Remove Land Protector units in the affected area
@@ -19536,19 +19536,19 @@ bool skill_check_condition_castbegin( map_session_data& sd, uint16 skill_id, uin
 				default:
 					switch ((uint32)log2(require.weapon)) {
 						case W_REVOLVER:
-							clif_msg(&sd, MSI_FAIL_NEED_EQUIPPED_GUN_HANDGUN);
+							clif_msg(sd, MSI_FAIL_NEED_EQUIPPED_GUN_HANDGUN);
 							break;
 						case W_RIFLE:
-							clif_msg(&sd, MSI_FAIL_NEED_EQUIPPED_GUN_RIFLE);
+							clif_msg(sd, MSI_FAIL_NEED_EQUIPPED_GUN_RIFLE);
 							break;
 						case W_GATLING:
-							clif_msg(&sd, MSI_FAIL_NEED_EQUIPPED_GUN_GATLING);
+							clif_msg(sd, MSI_FAIL_NEED_EQUIPPED_GUN_GATLING);
 							break;
 						case W_SHOTGUN:
-							clif_msg(&sd, MSI_FAIL_NEED_EQUIPPED_GUN_SHOTGUN);
+							clif_msg(sd, MSI_FAIL_NEED_EQUIPPED_GUN_SHOTGUN);
 							break;
 						case W_GRENADE:
-							clif_msg(&sd, MSI_FAIL_NEED_EQUIPPED_GUN_GRANADE);
+							clif_msg(sd, MSI_FAIL_NEED_EQUIPPED_GUN_GRANADE);
 						default:
 							clif_skill_fail(sd, skill_id, USESKILL_FAIL_THIS_WEAPON);
 							break;
@@ -19674,7 +19674,7 @@ bool skill_check_condition_castend( map_session_data& sd, uint16 skill_id, uint1
 	if( sd.skillitem == skill_id && !sd.skillitem_keep_requirement ) // Casting finished (Item skill or Hocus-Pocus)
 		return true;
 
-	status_change* sc = &sd.sc;
+	//status_change* sc = &sd.sc;
 	if (sc->empty())
 		sc = nullptr;
 
