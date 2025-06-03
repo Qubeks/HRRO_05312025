@@ -19633,6 +19633,7 @@ bool skill_check_condition_castend( map_session_data& sd, uint16 skill_id, uint1
 	struct status_data *status;
 	int32 i;
 	int16 index[MAX_SKILL_ITEM_REQUIRE];
+	struct status_change *sc = &sd.sc; // Enable to use Parry on 1 Hand Weapons when Knights, Star Gladiators and Blacksmiths are Soul Linked [vBrenth] mauiboy
 
 	if( sd.chatID )
 		return false;
@@ -19803,10 +19804,28 @@ bool skill_check_condition_castend( map_session_data& sd, uint16 skill_id, uint1
 		clif_skill_fail( sd, skill_id, USESKILL_FAIL_HP_INSUFFICIENT );
 		return false;
 	}
+	
+	// Enable to use Parry on 1 Hand Weapons when Knights, Star Gladiators and Blacksmiths are Soul Linked [vBrenth] mauiboy
+	if (require.weapon && !pc_check_weapontype(&sd, require.weapon)) {
+		status_change_entry* spirit = sc ? sc->getSCE(SC_SPIRIT) : nullptr;
 
-	if( require.weapon && !pc_check_weapontype(&sd,require.weapon) ) {
-		clif_skill_fail( sd, skill_id, USESKILL_FAIL_THIS_WEAPON );
-		return false;
+		// Special cases for Soul Linked Parrying
+		if (skill_id == LK_PARRYING && spirit) {
+			if ((spirit->val2 == SL_KNIGHT && 
+				 (sd.weapontype1 == W_1HSWORD)) || 
+				(spirit->val2 == SL_STAR && 
+				 (sd.weapontype1 == W_BOOK)) ||
+				(spirit->val2 == SL_BLACKSMITH && 
+				 (sd.weapontype1 == W_1HAXE))) {
+				// Allow parrying for specific conditions
+			} else {
+				clif_skill_fail(sd, skill_id, USESKILL_FAIL_THIS_WEAPON);
+				return false;
+			}
+		} else {
+			clif_skill_fail(sd, skill_id, USESKILL_FAIL_THIS_WEAPON);
+			return false;
+		}
 	}
 
 	if( require.ammo ) { //Skill requires stuff equipped in the ammo slot.

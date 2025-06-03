@@ -11331,8 +11331,15 @@ int32 status_change_start(struct block_list* src, struct block_list* bl,enum sc_
 			val3 = tick / tick_time;
 			tick = INFINITE_TICK; // Duration sent to the client should be infinite
 			break;
-		case SC_PARRYING:
-		    val2 = 20 + val1*3; // Block Chance
+			
+		case SC_PARRYING: // Enable to use Parry on 1 Hand Weapons when Knights, Star Gladiators and Blacksmiths are Soul Linked [vBrenth] mauiboy
+			if (sd && (sd->status.weapon == W_1HSWORD || // 1 Hand Sword
+					   sd->status.weapon == W_BOOK || // 1 Hand Book
+					   sd->status.weapon == W_1HAXE)) { // 1 Hand Axe
+				val2 = val1 * 2; // Block Chance when using a one-handed sword, book, or axe
+			} else {
+				val2 = 20 + val1 * 3; // Default Block Chance
+			}
 			break;
 
 		case SC_WINDWALK:
