@@ -6846,7 +6846,7 @@ Body:
       NoSave: true
       StopAttacking: true
       StopCasting: true
-      BossResist: 
+      BossResist: true
   - Status: Angelclan
     Icon: EFST_ANGELCLAN
     Flags:
