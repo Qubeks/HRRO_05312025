@@ -10980,7 +10980,7 @@ Body:
     Unit:
       Id: Spiderweb
       Range: 1
-      Interval: -1
+      Interval: 0
       Target: Enemy
       Flag:
         RemovedByFireRain: true

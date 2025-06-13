@@ -22638,7 +22638,7 @@ static int32 skill_unit_timer_sub(DBKey key, DBData *data, va_list ap)
 				}
 				skill_delunit(unit);
 			}
-				break;
+				break;						
 
 			case UNT_REVERBERATION:
 			case UNT_NETHERWORLD:
