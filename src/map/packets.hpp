@@ -919,6 +919,14 @@ struct PACKET_ZC_ACK_ITEMREFINING {
 } __attribute__((packed));
 DEFINE_PACKET_HEADER(ZC_ACK_ITEMREFINING, 0x188)
 
+#if PACKETVER_MAIN_NUM >= 20221019
+struct PACKET_ZC_UI_OPEN3 {
+	int16 PacketType;
+	int8 UIType;
+} __attribute__((packed));
+DEFINE_PACKET_HEADER(ZC_UI_OPEN3, 0x0a38);
+#endif
+
 struct PACKET_ZC_PAR_CHANGE_USER {
 	int16 packetType;
 	uint32 gid;
@@ -2035,6 +2043,105 @@ struct PACKET_ZC_WHISPER_LIST{
 	PACKET_ZC_WHISPER_LIST_sub names[];
 } __attribute__((packed));
 DEFINE_PACKET_HEADER(ZC_WHISPER_LIST, 0xd4);
+
+struct PACKET_CZ_MOVE_ITEM_TO_PERSONAL{
+	int16 packetType;
+	uint32 unknown;
+	uint16 index;
+	uint32 amount;
+} __attribute__((packed));
+DEFINE_PACKET_HEADER(CZ_MOVE_ITEM_TO_PERSONAL, 0xc22);
+
+#if PACKETVER_MAIN_NUM >= 20250402
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 {
+	uint32 nameid;
+	uint16 refine_level;
+	uint32 amount;
+	uint16 type;
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub {
+	uint32 nameid;
+	uint16 type;
+	uint32 amount;
+	uint32 weight;
+	uint32 index;
+	uint32 zeny;
+	uint16 viewSprite;
+	uint32 location;
+	uint32 currency_count;
+	uint32 refine_level;
+	// Workaround: this should be currencies[], but compilers do not support multiple layers of incomplete types. See error C2233
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 currencies[1];
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO {
+	int16 packetType;
+	int16 packetLength;
+	int32 items_count;
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub items[];
+} __attribute__((packed));
+
+DEFINE_PACKET_HEADER(ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO, 0x0b79);
+#elif PACKETVER_MAIN_NUM >= 20210203 || PACKETVER_RE_NUM >= 20211103 || PACKETVER_ZERO_NUM >= 20221024
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 {
+	uint32 nameid;
+	uint16 refine_level;
+	uint32 amount;
+	uint16 type;
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub {
+	uint32 nameid;
+	uint16 type;
+	uint32 amount;
+	uint32 weight;
+	uint32 index;
+	uint32 zeny;
+	uint16 viewSprite;
+	uint32 location;
+	uint32 currency_count;
+	// Workaround: this should be currencies[], but compilers do not support multiple layers of incomplete types. See error C2233
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 currencies[1];
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO {
+	int16 packetType;
+	int16 packetLength;
+	int32 items_count;
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub items[];
+} __attribute__((packed));
+
+DEFINE_PACKET_HEADER(ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO, 0x0b79);
+#elif PACKETVER_MAIN_NUM >= 20191120 || PACKETVER_RE_NUM >= 20191106 || PACKETVER_ZERO_NUM >= 20191127
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 {
+	uint32 nameid;
+	uint16 refine_level;
+	uint32 amount;
+	uint16 type;
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub {
+	uint32 nameid;
+	uint16 type;
+	uint32 amount;
+	uint32 weight;
+	uint32 index;
+	uint32 zeny;
+	uint32 currency_count;
+	// Workaround: this should be currencies[], but compilers do not support multiple layers of incomplete types. See error C2233
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub2 currencies[1];
+} __attribute__((packed));
+
+struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO {
+	int16 packetType;
+	int16 packetLength;
+	int32 items_count;
+	struct PACKET_ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO_sub items[];
+} __attribute__((packed));
+
+DEFINE_PACKET_HEADER(ZC_NPC_EXPANDED_BARTER_MARKET_ITEMINFO, 0x0b56);
+#endif  // PACKETVER_MAIN_NUM >= 20191120 || PACKETVER_RE_NUM >= 20191106 || PACKETVER_ZERO_NUM >= 20191127
 
 // NetBSD 5 and Solaris don't like pragma pack but accept the packed attribute
 #if !defined( sun ) && ( !defined( __NETBSD__ ) || __NetBSD_Version__ >= 600000000 )

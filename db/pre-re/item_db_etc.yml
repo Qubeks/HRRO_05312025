@@ -4172,7 +4172,7 @@ Body:
     Flags:
       BuyingStore: true
     Script: |
-      bonus bNoMagicDamage,50;
+      bonus bNoMagicDamage,100;
       bonus bUseSPrate,100;
   - Id: 4129
     AegisName: Baphomet__Card
